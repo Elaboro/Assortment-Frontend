@@ -23,37 +23,28 @@
     </b-jumbotron>
 
     <b-row align-v="stretch">
-      <b-col class="col-4">
-        <b-list-group vertical header="Menu">
-          <b-button block squared variant="outline-info">item</b-button>
-          <b-button block squared variant="outline-info">item</b-button>
-        </b-list-group>
-      </b-col>
 
-      <b-col class="col-8">
-        <div class="row">
+      <MenuList />
+      <AssortmentList />
 
-          <div class="col-sm-6 mb-3">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">name</h5>
-                <p class="card-text">description</p>
-                <a href="#" class="btn btn-primary">button</a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </b-col>
     </b-row>
   </b-container>
 
 </template>
 
 <script lang="ts">
+import MenuList from '@/components/MenuList.vue';
+import AssortmentList from '@/components/AssortmentList.vue';
 import { defineComponent } from 'vue';
 
+import AssortmentService from './api/AssortmentService';
+const assortmentList = AssortmentService.getList();
+
 export default defineComponent({
+  components: {
+    MenuList,
+    AssortmentList,
+  },
   name: 'App',
 });
 </script>
