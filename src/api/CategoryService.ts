@@ -18,4 +18,9 @@ export default class CategoryService {
     const response = await axios.post<Category>(`${API_URL}/category/update`, data);
     return response.data;
   }
+
+  static async getList(): Promise<Category[]> {
+    const response = await axios.get<Category[]>(`${API_URL}/category/list`);
+    return response.data;
+  }
 }

@@ -24,8 +24,8 @@
 
     <b-row align-v="stretch">
 
-      <MenuList />
-      <AssortmentList />
+      <MenuList :category_list="categoryList" />
+      <AssortmentList :assortment_list="assortmentList"/>
 
     </b-row>
   </b-container>
@@ -38,14 +38,36 @@ import AssortmentList from '@/components/AssortmentList.vue';
 import { defineComponent } from 'vue';
 
 import AssortmentService from './api/AssortmentService';
-const assortmentList = AssortmentService.getList();
+import {
+  Assortment,
+  Category,
+} from './api/type/Type';
+import CategoryService from './api/CategoryService';
 
 export default defineComponent({
+  name: 'App',
   components: {
     MenuList,
     AssortmentList,
   },
-  name: 'App',
+  data() {
+    return {
+      categoryList: [] as Category[],
+      assortmentList: [] as Assortment[],
+    }
+  }, 
+  methods: {
+    async getCategoryList(){
+      this.categoryList = await CategoryService.getList();
+    },
+    async getAssortmentList() {
+      this.assortmentList = await AssortmentService.getList();
+    },
+  },
+  mounted() {
+    this.getCategoryList();
+    this.getAssortmentList();
+  },
 });
 </script>
 
