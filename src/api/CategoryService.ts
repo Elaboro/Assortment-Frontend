@@ -4,6 +4,7 @@ import {
   Category,
   CategoryCreate,
   CategoryUpdate,
+  CategoryWithAssortment,
 } from "./type/Type";
 
 const API_URL = cfg.API_URL;
@@ -21,6 +22,11 @@ export default class CategoryService {
 
   static async getList(): Promise<Category[]> {
     const response = await axios.get<Category[]>(`${API_URL}/category/list`);
+    return response.data;
+  }
+
+  static async getListWithAssortment(): Promise<CategoryWithAssortment[]> {
+    const response = await axios.get<CategoryWithAssortment[]>(`${API_URL}/category/list/with_assortment`);
     return response.data;
   }
 }

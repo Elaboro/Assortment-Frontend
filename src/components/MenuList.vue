@@ -4,7 +4,9 @@
     <b-list-group vertical header="Menu"
       v-for="item in category_list"
     >
-      <b-button block squared variant="outline-info">{{ item.name }}</b-button>
+      <b-button block squared variant="outline-info"
+        @click="selectCategory(item.id)"
+      >{{ item.name }}</b-button>
     </b-list-group>
   </b-col>
 
@@ -22,6 +24,11 @@ export default defineComponent({
     category_list: {
       type: Array as PropType<Category[]>,
       required: true,
+    }
+  },
+  methods: {
+    selectCategory(id: Category["id"]) {
+      this.$emit("selection", id);
     }
   }
 });

@@ -24,7 +24,10 @@
 
     <b-row align-v="stretch">
 
-      <MenuList :category_list="categoryList" />
+      <MenuList
+        :category_list="categoryList"
+        @selection="selectCategory"
+      />
       <AssortmentList :assortment_list="assortmentList"/>
 
     </b-row>
@@ -37,10 +40,10 @@ import MenuList from '@/components/MenuList.vue';
 import AssortmentList from '@/components/AssortmentList.vue';
 import { defineComponent } from 'vue';
 
-import AssortmentService from './api/AssortmentService';
 import {
   Assortment,
   Category,
+  CategoryWithAssortment,
 } from './api/type/Type';
 import CategoryService from './api/CategoryService';
 
@@ -54,19 +57,28 @@ export default defineComponent({
     return {
       categoryList: [] as Category[],
       assortmentList: [] as Assortment[],
+      categoryWithAssortmentList: [] as CategoryWithAssortment[],
     }
   }, 
   methods: {
-    async getCategoryList(){
-      this.categoryList = await CategoryService.getList();
+    async getCategoryListWithAssortment() {
+      this.categoryList = this.categoryWithAssortmentList = await CategoryService.getListWithAssortment();
+
+      const id = this.categoryWithAssortmentList[0].id;
+      this.assortmentList = this.getAssortmentListById(id);
     },
-    async getAssortmentList() {
-      this.assortmentList = await AssortmentService.getList();
+    selectCategory(id: Category["id"]) {
+      this.assortmentList = this.getAssortmentListById(id);
+    },
+    getAssortmentListById(id: Category["id"]) {
+      const [ one_category ] = this.categoryWithAssortmentList.filter((category) => { 
+        if(id === category.id) return category;
+      });
+      return one_category.assortment;
     },
   },
-  mounted() {
-    this.getCategoryList();
-    this.getAssortmentList();
+  async mounted() {
+    this.getCategoryListWithAssortment();
   },
 });
 </script>
